@@ -22,7 +22,11 @@ async function core() {
     await prepare();
     registerCommander();
   } catch (e) {
-    log.error(e.message);
+    if (process.env.LOG_LEVEL === "verbose") {
+      console.log(e);
+    } else {
+      log.error(e.message);
+    }
   }
 }
 

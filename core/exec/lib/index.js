@@ -11,7 +11,9 @@ const SETTINGS = {
 
 const CACHE_DIR = "dependencies";
 
-function exec() {
+let pkg;
+
+async function exec() {
   let targetPath = process.env.CLI_TARGET_PATH;
   let storeDir = "";
   const homePath = process.env.CLI_HOME_PATH;
@@ -27,18 +29,30 @@ function exec() {
   if (!targetPath) {
     targetPath = path.resolve(homePath, CACHE_DIR);
     storeDir = path.resolve(targetPath, "node_modules");
+
+    pkg = new Package({
+      targetPath,
+      storeDir,
+      packageName,
+      packageVersion,
+    });
+
+    if (pkg.exists()) {
+    } else {
+      await pkg.install();
+    }
+  } else {
+    pkg = new Package({
+      targetPath,
+      packageName,
+      packageVersion,
+    });
   }
 
-  const pkg = new Package({
-    targetPath,
-    storeDir,
-    packageName,
-    packageVersion,
-  });
-
-  // XXX
-  console.log(pkg);
-  pkg.getRootFilePath();
+  const rootFile = pkg.getRootFilePath();
+  if (rootFile) {
+    require(rootFile).apply(null, arguments);
+  }
 }
 
 module.exports = exec;

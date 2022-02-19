@@ -28,11 +28,16 @@ class Package {
   exists() {}
 
   install() {
-    npminstall({
+    return npminstall({
       root: this.targetPath,
       storeDir: this.storePath,
       registry: getDefaultRegistry(),
-      pkgs: [{ name: this.packageName, version: this.packageVersion }],
+      pkgs: [
+        {
+          name: this.packageName,
+          version: this.packageVersion,
+        },
+      ],
     });
   }
 
