@@ -1,0 +1,36 @@
+{
+  "name": "@imooc-cli-dev/package",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Gouteng <603217548@qq.com>",
+  "homepage": "https://github.com/goutenglee/imooc-cli-dev#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goutenglee/imooc-cli-dev.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/goutenglee/imooc-cli-dev/issues"
+  },
+  "dependencies": {
+    "@imooc-cli-dev/format-path": "file:../../utils/format-path",
+    "@imooc-cli-dev/utils": "file:../../utils/utils",
+    "@imooc-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
+    "npminstall": "^5.4.1",
+    "pkg-dir": "^5.0.0"
+  }
+}

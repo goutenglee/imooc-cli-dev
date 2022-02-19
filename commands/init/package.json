@@ -1,0 +1,29 @@
+{
+  "name": "@imooc-cli-dev/init",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Gouteng <603217548@qq.com>",
+  "homepage": "https://github.com/goutenglee/imooc-cli-dev#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goutenglee/imooc-cli-dev.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/goutenglee/imooc-cli-dev/issues"
+  }
+}
