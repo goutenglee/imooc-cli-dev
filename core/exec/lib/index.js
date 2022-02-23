@@ -37,7 +37,8 @@ async function exec() {
       packageVersion,
     });
 
-    if (pkg.exists()) {
+    if (await pkg.exists()) {
+      await pkg.update();
     } else {
       await pkg.install();
     }

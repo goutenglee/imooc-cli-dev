@@ -3,11 +3,14 @@
 const path = require("path");
 
 const pkgDir = require("pkg-dir").sync;
-const npminstall = require("npminstall");
+const { installLocal } = require("npminstall");
+const pathExists = require("path-exists").sync;
+const fse = require("fs-extra");
 
 const { isObject } = require("@imooc-cli-dev/utils");
 const formatPath = require("@imooc-cli-dev/format-path");
-const { getDefaultRegistry } = require("@imooc-cli-dev/get-npm-info");
+const { getDefaultRegistry, getNpmLastestVersion } = require("@imooc-cli-dev/get-npm-info");
+const { log } = require("console");
 
 class Package {
   constructor(options) {
@@ -23,12 +26,45 @@ class Package {
     this.storePath = options.storePath;
     this.packageName = options.packageName;
     this.packageVersion = options.packageVersion;
+    this.cacheFilePathPrefix = this.packageName.replace("/", "_");
   }
 
-  exists() {}
+  async prepare() {
+    if (this.storePath && !pathExists(this.storePath)) {
+      fse.mkdirpSync(this.storePath);
+    }
 
-  install() {
-    return npminstall({
+    if (this.packageVersion === "lastest") {
+      this.packageVersion = await getNpmLastestVersion(this.packageName);
+    }
+  }
+
+  get cacheFilePath() {
+    return path.resolve(
+      this.storePath,
+      `_${this.cacheFilePathPrefix}@${this.packageVersion}@${this.packageName}`
+    );
+  }
+
+  getSpecificCacheFilePath(packageVersion) {
+    return path.resolve(
+      this.storePath,
+      `_${this.cacheFilePathPrefix}@${packageVersion}@${this.packageName}`
+    );
+  }
+
+  async exists() {
+    if (this.storePath) {
+      await this.prepare();
+      return pathExists(this.cacheFilePath);
+    } else {
+      return pathExists(this.targetPath);
+    }
+  }
+
+  async install() {
+    await this.prepare();
+    return installLocal({
       root: this.targetPath,
       storeDir: this.storePath,
       registry: getDefaultRegistry(),
@@ -41,16 +77,44 @@ class Package {
     });
   }
 
-  update() {}
+  async update() {
+    const preUpdatePackageVersion = this.packageVersion;
+    await this.prepare();
+    const lastestPackageVersion = await getNpmLastestVersion(this.packageName);
+    const lastestFilePath = this.getSpecificCacheFilePath(lastestPackageVersion);
+    if (!pathExists(lastestFilePath)) {
+      await installLocal({
+        root: this.targetPath,
+        storeDir: this.storePath,
+        registry: getDefaultRegistry(),
+        pkgs: [
+          {
+            name: this.packageName,
+            version: lastestPackageVersion,
+          },
+        ],
+      });
+      this.packageVersion = lastestFilePath;
+      console.log(`已将${this.packageName}从${preUpdatePackageVersion}更新至${lastestFilePath}`);
+    }
+  }
 
   getRootFilePath() {
-    const dir = pkgDir(this.targetPath);
-    if (dir) {
-      const pkgFile = require(path.resolve(dir, "package.json"));
-      if (pkgFile && pkgFile.main) {
-        return formatPath(path.resolve(dir, pkgFile.main));
+    const _getRootFile = function (targetPath) {
+      const dir = pkgDir(targetPath);
+      if (dir) {
+        const pkgFile = require(path.resolve(dir, "package.json"));
+        if (pkgFile && pkgFile.main) {
+          return formatPath(path.resolve(dir, pkgFile.main));
+        }
+        return null;
       }
-      return null;
+    };
+
+    if (this.storePath) {
+      _getRootFile(this.cacheFilePath);
+    } else {
+      return _getRootFile(this.targetPath);
     }
   }
 }
