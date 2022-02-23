@@ -27,6 +27,7 @@
     "url": "https://github.com/goutenglee/imooc-cli-dev/issues"
   },
   "dependencies": {
-    "@imooc-cli-dev/command": "file:../../models/command"
+    "@imooc-cli-dev/command": "file:../../models/command",
+    "@imooc-cli-dev/log": "file:../../utils/log"
   }
 }
