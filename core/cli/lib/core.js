@@ -32,7 +32,6 @@ async function core() {
 
 async function prepare() {
   checkPkgVersion();
-  checkNodeVersion();
   checkRoot();
   checkUserHome();
   // checkInputArgs();
@@ -48,10 +47,7 @@ function registerCommander() {
     .option("-d, --debug", "是否开启调试模式", false)
     .option("-tp, --targetPath []", "是否指定本地调试文件路径", "");
 
-  program
-    .command("init [projectName]")
-    .option("-f, --force", "是否强制初始化项目")
-    .action(exec);
+  program.command("init [projectName]").option("-f, --force", "是否强制初始化项目").action(exec);
 
   program.on("option:targetPath", function () {
     process.env.CLI_TARGET_PATH = program._optionValues.targetPath;
@@ -151,16 +147,6 @@ function checkUserHome() {
 function checkRoot() {
   const rootCheck = require("root-check");
   rootCheck();
-}
-
-function checkNodeVersion() {
-  const currentVersion = process.version;
-  const lowestVersion = constant.LOWEST_NODE_VERSION;
-  if (!semver.gte(currentVersion, lowestVersion)) {
-    throw new Error(
-      colors.red(`imooc-cli 需要安装 v${lowestVersion} 以上的 Node.js`)
-    );
-  }
 }
 
 function checkPkgVersion() {
