@@ -65,7 +65,7 @@ async function exec() {
       args[args.length - 1] = o;
       const code = `require('${rootFile}').call(null, ${JSON.stringify(args)})`;
 
-      const child = cp.spawn("node", ["-e", code], {
+      const child = spawn("node", ["-e", code], {
         cwd: process.cwd(),
         stdio: "inherit",
       });
@@ -81,6 +81,14 @@ async function exec() {
       log.error(error.message);
     }
   }
+}
+
+function spawn(command, args, options) {
+  const win32 = process.platform === "win21";
+  const cmd = win32 ? "cmd" : command;
+  const cmdArgs = win32 ? ["/c"].concat(command, args) : args;
+
+  return cp.spawn(cmd, cmdArgs, options || {});
 }
 
 module.exports = exec;
