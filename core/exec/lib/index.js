@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require("path");
+const cp = require("child_process");
 
 const Package = require("@imooc-cli-dev/package");
 const log = require("@imooc-cli-dev/log");
@@ -54,6 +55,19 @@ async function exec() {
   if (rootFile) {
     try {
       require(rootFile).call(null, Array.from(arguments));
+      const code = "";
+      const child = cp.spawn("node", ["-e", code], {
+        cwd: process.cwd(),
+        stdio: "inherit",
+      });
+      child.on("error", (e) => {
+        log.error(e.message);
+        process.exit(1);
+      });
+      child.on("exit", (e) => {
+        log.verbose("命令执行成功：" + e);
+        process.exit(e);
+      });
     } catch (error) {
       log.error(error.message);
     }
