@@ -17,8 +17,8 @@ class InitCommand extends Command {
   }
 }
 
-function init(projectName, cmdObj) {
-  return new InitCommand();
+function init(argv) {
+  return new InitCommand(argv);
 }
 
 module.exports = init;
