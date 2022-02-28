@@ -1,5 +1,9 @@
 "use strict";
 
+const fs = require("fs");
+
+const inquirer = require("inquirer");
+
 const Command = require("@imooc-cli-dev/command");
 const log = require("@imooc-cli-dev/log");
 
@@ -12,9 +16,15 @@ class InitCommand extends Command {
     log.verbose("force", this.force);
   }
 
-  exec() {
-    console.log("initd的业务逻辑");
+  async exec() {
+    try {
+      await this.prepare();
+    } catch (e) {
+      log.error(e.message);
+    }
   }
+
+  async prepare() {}
 }
 
 function init(argv) {
