@@ -28,14 +28,20 @@ class InitCommand extends Command {
   async prepare() {
     const localPath = process.cwd();
     if (!this.isDirEmpty(localPath)) {
-      const { ifContinue } = await inquirer.prompt({
-        type: "confirm",
-        name: "ifContinue",
-        default: false,
-        message: "当前文件夹不为空，是否强制清空，以继续创建项目？",
-      });
+      let ifContinue = false;
 
-      if (ifContinue) {
+      if (!this.force) {
+        ifContinue = (
+          await inquirer.prompt({
+            type: "confirm",
+            name: "ifContinue",
+            default: false,
+            message: "当前文件夹不为空，是否强制清空，以继续创建项目？",
+          })
+        ).ifContinue;
+      }
+
+      if (ifContinue || this.force) {
         const { confirmDelete } = inquirer.prompt({
           type: "confirm",
           name: "confirmDelete",
