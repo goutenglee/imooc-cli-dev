@@ -25,6 +25,15 @@ class InitCommand extends Command {
   }
 
   async prepare() {}
+
+  iSCwdEmpty() {
+    const localPath = process.cwd();
+    let fileList = fs.readFileSync(localPath);
+    fileList = fileList.filter((file) => {
+      !file.startWith(".") && ["node_modules"].indexOf(file) < 0;
+    });
+    return !fileList || fileList.length <= 0;
+  }
 }
 
 function init(argv) {
