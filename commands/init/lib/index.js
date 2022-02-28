@@ -3,6 +3,7 @@
 const fs = require("fs");
 
 const inquirer = require("inquirer");
+const fse = require("fs-extra");
 
 const Command = require("@imooc-cli-dev/command");
 const log = require("@imooc-cli-dev/log");
@@ -25,18 +26,22 @@ class InitCommand extends Command {
   }
 
   async prepare() {
-    if (!this.iSCwdEmpty()) {
+    const localPath = process.cwd();
+    if (!this.isDirEmpty(localPath)) {
       const { ifContinue } = await inquirer.prompt({
         type: "confirm",
         name: "ifContinue",
         default: false,
         message: "当前文件夹不为空，是否强制清空，以继续创建项目？",
       });
+
+      if (ifContinue) {
+        fse.emptyDirSync(localPath);
+      }
     }
   }
 
-  iSCwdEmpty() {
-    const localPath = process.cwd();
+  isDirEmpty(localPath) {
     let fileList = fs.readFileSync(localPath);
     fileList = fileList.filter((file) => {
       !file.startWith(".") && ["node_modules"].indexOf(file) < 0;
