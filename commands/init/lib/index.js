@@ -36,7 +36,16 @@ class InitCommand extends Command {
       });
 
       if (ifContinue) {
-        fse.emptyDirSync(localPath);
+        const { confirmDelete } = inquirer.prompt({
+          type: "confirm",
+          name: "confirmDelete",
+          default: false,
+          message: "是否确认清空当前文件夹？",
+        });
+
+        if (confirmDelete) {
+          fse.emptyDirSync(localPath);
+        }
       }
     }
   }
