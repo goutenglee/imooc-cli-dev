@@ -24,7 +24,16 @@ class InitCommand extends Command {
     }
   }
 
-  async prepare() {}
+  async prepare() {
+    if (!this.iSCwdEmpty()) {
+      const { ifContinue } = await inquirer.prompt({
+        type: "confirm",
+        name: "ifContinue",
+        default: false,
+        message: "当前文件夹不为空，是否强制清空，以继续创建项目？",
+      });
+    }
+  }
 
   iSCwdEmpty() {
     const localPath = process.cwd();
