@@ -47,7 +47,10 @@ function registerCommander() {
     .option("-d, --debug", "是否开启调试模式", false)
     .option("-tp, --targetPath []", "是否指定本地调试文件路径", "");
 
-  program.command("init [projectName]").option("-f, --force", "是否强制初始化项目").action(exec);
+  program
+    .command("init [projectName]")
+    .option("-f, --force", "是否强制初始化项目")
+    .action(exec);
 
   program.on("option:targetPath", function () {
     process.env.CLI_TARGET_PATH = program._optionValues.targetPath;
