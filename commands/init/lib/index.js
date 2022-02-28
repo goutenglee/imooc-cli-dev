@@ -39,6 +39,8 @@ class InitCommand extends Command {
             message: "当前文件夹不为空，是否强制清空，以继续创建项目？",
           })
         ).ifContinue;
+
+        if (!ifContinue) return;
       }
 
       if (ifContinue || this.force) {
