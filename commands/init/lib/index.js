@@ -8,6 +8,9 @@ const fse = require("fs-extra");
 const Command = require("@imooc-cli-dev/command");
 const log = require("@imooc-cli-dev/log");
 
+const TYPE_PROJECT = "project";
+const TYPE_COMPONENT = "component";
+
 class InitCommand extends Command {
   init() {
     this.projectName = this._argv[0] || "";
@@ -56,6 +59,21 @@ class InitCommand extends Command {
         }
       }
     }
+    return this.getProjectInfo();
+  }
+
+  async getProjectInfo() {
+    const { type } = await inquirer.prompt({
+      type: "list",
+      name: "type",
+      message: "请选择要初始化的类型",
+      default: TYPE_PROJECT,
+      choices: [
+        { name: "项目", value: TYPE_PROJECT },
+        { name: "模板", value: TYPE_COMPONENT },
+      ],
+    });
+    log.verbose("type", type);
   }
 
   isDirEmpty(localPath) {
