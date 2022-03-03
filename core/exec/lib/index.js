@@ -6,6 +6,7 @@ const cp = require("child_process");
 const Package = require("@imooc-cli-dev/package");
 const log = require("@imooc-cli-dev/log");
 
+// XXX 手动维护的配置表，之后应该会修改成 api 获取
 const SETTINGS = {
   init: "@imooc-cli/init",
 };
@@ -16,7 +17,7 @@ let pkg;
 
 async function exec() {
   let targetPath = process.env.CLI_TARGET_PATH;
-  let storeDir = "";
+  let storePath = "";
   const homePath = process.env.CLI_HOME_PATH;
 
   log.verbose("targetPath", targetPath);
@@ -29,11 +30,11 @@ async function exec() {
 
   if (!targetPath) {
     targetPath = path.resolve(homePath, CACHE_DIR);
-    storeDir = path.resolve(targetPath, "node_modules");
+    storePath = path.resolve(targetPath, "node_modules");
 
     pkg = new Package({
       targetPath,
-      storeDir,
+      storePath,
       packageName,
       packageVersion,
     });
@@ -52,27 +53,37 @@ async function exec() {
   }
 
   const rootFile = pkg.getRootFilePath();
+
   if (rootFile) {
     try {
       const args = Array.from(arguments);
       const cmd = args[args.length - 1];
       const o = Object.create(null);
+
       Object.keys(cmd).forEach((key) => {
-        if (cmd.hasOwnProperty(key) && !key.startsWith("_") && key !== "parent") {
+        if (
+          cmd.hasOwnProperty(key) &&
+          !key.startsWith("_") &&
+          key !== "parent"
+        ) {
           o[key] = cmd[key];
         }
       });
+
       args[args.length - 1] = o;
+
       const code = `require('${rootFile}').call(null, ${JSON.stringify(args)})`;
 
       const child = spawn("node", ["-e", code], {
         cwd: process.cwd(),
         stdio: "inherit",
       });
+
       child.on("error", (e) => {
         log.error(e.message);
         process.exit(1);
       });
+
       child.on("exit", (e) => {
         log.verbose("命令执行成功：" + e);
         process.exit(e);

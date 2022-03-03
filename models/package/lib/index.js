@@ -9,7 +9,11 @@ const fse = require("fs-extra");
 
 const { isObject } = require("@imooc-cli-dev/utils");
 const formatPath = require("@imooc-cli-dev/format-path");
-const { getDefaultRegistry, getNpmLastestVersion } = require("@imooc-cli-dev/get-npm-info");
+const {
+  getDefaultRegistry,
+  getNpmLastestVersion,
+} = require("@imooc-cli-dev/get-npm-info");
+// XXX log 好像出错了
 const { log } = require("console");
 
 class Package {
@@ -81,7 +85,9 @@ class Package {
     const preUpdatePackageVersion = this.packageVersion;
     await this.prepare();
     const lastestPackageVersion = await getNpmLastestVersion(this.packageName);
-    const lastestFilePath = this.getSpecificCacheFilePath(lastestPackageVersion);
+    const lastestFilePath = this.getSpecificCacheFilePath(
+      lastestPackageVersion
+    );
     if (!pathExists(lastestFilePath)) {
       await installLocal({
         root: this.targetPath,
@@ -95,13 +101,15 @@ class Package {
         ],
       });
       this.packageVersion = lastestFilePath;
-      console.log(`已将${this.packageName}从${preUpdatePackageVersion}更新至${lastestFilePath}`);
+      console.log(
+        `已将${this.packageName}从${preUpdatePackageVersion}更新至${lastestFilePath}`
+      );
     }
   }
 
   getRootFilePath() {
-    const _getRootFile = function (targetPath) {
-      const dir = pkgDir(targetPath);
+    const _getRootFile = function (p) {
+      const dir = pkgDir(p);
       if (dir) {
         const pkgFile = require(path.resolve(dir, "package.json"));
         if (pkgFile && pkgFile.main) {
@@ -112,7 +120,7 @@ class Package {
     };
 
     if (this.storePath) {
-      _getRootFile(this.cacheFilePath);
+      return _getRootFile(this.cacheFilePath);
     } else {
       return _getRootFile(this.targetPath);
     }

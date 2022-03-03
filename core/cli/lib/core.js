@@ -10,7 +10,6 @@ const commander = require("commander");
 const pkg = require("../package.json");
 const constant = require("./const");
 const log = require("@imooc-cli-dev/log");
-const init = require("@imooc-cli-dev/init");
 const exec = require("@imooc-cli-dev/exec");
 
 const program = new commander.Command();
@@ -45,7 +44,7 @@ function registerCommander() {
     .usage("<cmd> [options]")
     .version(pkg.version)
     .option("-d, --debug", "是否开启调试模式", false)
-    .option("-tp, --targetPath []", "是否指定本地调试文件路径", "");
+    .option("-tp, --targetPath <targetPath>", "是否指定本地调试文件路径", "");
 
   program
     .command("init [projectName]")
