@@ -23,13 +23,17 @@ class InitCommand extends Command {
 
   async exec() {
     try {
-      const ret = await this.prepare();
-      if (ret) {
+      const projectInfo = await this.prepare();
+
+      if (projectInfo) {
+        this.downloadTemplate();
       }
     } catch (e) {
       log.error(e.message);
     }
   }
+
+  downloadTemplate() {}
 
   async prepare() {
     const localPath = process.cwd();
@@ -68,7 +72,7 @@ class InitCommand extends Command {
   }
 
   async getProjectInfo() {
-    const projectInfo = {};
+    let projectInfo = {};
 
     const { type } = await inquirer.prompt({
       type: "list",
@@ -84,7 +88,7 @@ class InitCommand extends Command {
     log.verbose("type", type);
 
     if (type === TYPE_PROJECT) {
-      const o = await inquirer.prompt([
+      const projectSetting = await inquirer.prompt([
         {
           type: "input",
           name: "projectName",
@@ -133,9 +137,7 @@ class InitCommand extends Command {
           },
         },
       ]);
-
-      // XXX
-      console.log(o);
+      projectInfo = { type, ...projectSetting };
     } else if (type === TYPE_COMPONENT) {
     }
 
