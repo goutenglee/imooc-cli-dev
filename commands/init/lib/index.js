@@ -4,6 +4,7 @@ const fs = require("fs");
 
 const inquirer = require("inquirer");
 const fse = require("fs-extra");
+const semver = require("semver");
 
 const Command = require("@imooc-cli-dev/command");
 const log = require("@imooc-cli-dev/log");
@@ -90,7 +91,17 @@ class InitCommand extends Command {
           message: "请输入项目名称",
           default: "",
           validate: function (v) {
-            return typeof v === "string";
+            const done = this.async();
+
+            setTimeout(function () {
+              // prettier-ignore
+              if (!/^[a-zA-Z]+([-][a-zA-Z][a-zA-Z0-9]*|[_][a-zA-Z][a-zA-Z0-9]*|[a-zA-Z0-9])*$/.test(v)) {
+                done("请输入合法名称：只能使用英文、数字、和连接符-或_，必须以字母开头");
+                return;
+              }
+
+              done(null, true);
+            }, 0);
           },
           filter: function (v) {
             return v;
@@ -102,10 +113,23 @@ class InitCommand extends Command {
           message: "请输入项目版本号",
           default: "",
           validate: function (v) {
-            return typeof v === "string";
+            const done = this.async();
+
+            setTimeout(function () {
+              if (!semver.valid(v)) {
+                done("请输入合法版本号");
+                return;
+              }
+
+              done(null, true);
+            }, 0);
           },
           filter: function (v) {
-            return v;
+            if (!!semver.valid(v)) {
+              return semver.valid(v);
+            } else {
+              return v;
+            }
           },
         },
       ]);
