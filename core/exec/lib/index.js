@@ -62,9 +62,8 @@ async function exec() {
 
       Object.keys(cmd).forEach((key) => {
         if (
-          cmd.hasOwnProperty(key) &&
-          !key.startsWith("_") &&
-          key !== "parent"
+          key === "_optionValues" ||
+          (cmd.hasOwnProperty(key) && key !== "parent" && !key.startsWith("_"))
         ) {
           o[key] = cmd[key];
         }

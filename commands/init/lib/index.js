@@ -14,15 +14,17 @@ const TYPE_COMPONENT = "component";
 class InitCommand extends Command {
   init() {
     this.projectName = this._argv[0] || "";
-    // XXX
     this.force = !!this._cmd._optionValues.force;
+
     log.verbose("projectName", this.projectName);
     log.verbose("force", this.force);
   }
 
   async exec() {
     try {
-      await this.prepare();
+      const ret = await this.prepare();
+      if (ret) {
+      }
     } catch (e) {
       log.error(e.message);
     }
@@ -30,6 +32,7 @@ class InitCommand extends Command {
 
   async prepare() {
     const localPath = process.cwd();
+
     if (!this.isDirEmpty(localPath)) {
       let ifContinue = false;
 
@@ -51,7 +54,7 @@ class InitCommand extends Command {
           type: "confirm",
           name: "confirmDelete",
           default: false,
-          message: "是否确认清空当前文件夹？",
+          message: "确认清空当前文件夹？",
         });
 
         if (confirmDelete) {
@@ -59,6 +62,7 @@ class InitCommand extends Command {
         }
       }
     }
+
     return this.getProjectInfo();
   }
 
@@ -73,13 +77,14 @@ class InitCommand extends Command {
         { name: "模板", value: TYPE_COMPONENT },
       ],
     });
+
     log.verbose("type", type);
   }
 
   isDirEmpty(localPath) {
-    let fileList = fs.readFileSync(localPath);
+    let fileList = fs.readdirSync(localPath);
     fileList = fileList.filter((file) => {
-      !file.startWith(".") && ["node_modules"].indexOf(file) < 0;
+      !file.startsWith(".") && ["node_modules"].indexOf(file) < 0;
     });
     return !fileList || fileList.length <= 0;
   }
