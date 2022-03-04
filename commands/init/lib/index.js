@@ -67,6 +67,8 @@ class InitCommand extends Command {
   }
 
   async getProjectInfo() {
+    const projectInfo = {};
+
     const { type } = await inquirer.prompt({
       type: "list",
       name: "type",
@@ -79,6 +81,41 @@ class InitCommand extends Command {
     });
 
     log.verbose("type", type);
+
+    if (type === TYPE_PROJECT) {
+      const o = await inquirer.prompt([
+        {
+          type: "input",
+          name: "projectName",
+          message: "请输入项目名称",
+          default: "",
+          validate: function (v) {
+            return typeof v === "string";
+          },
+          filter: function (v) {
+            return v;
+          },
+        },
+        {
+          type: "input",
+          name: "projectVersion",
+          message: "请输入项目版本号",
+          default: "",
+          validate: function (v) {
+            return typeof v === "string";
+          },
+          filter: function (v) {
+            return v;
+          },
+        },
+      ]);
+
+      // XXX
+      console.log(o);
+    } else if (type === TYPE_COMPONENT) {
+    }
+
+    return projectInfo;
   }
 
   isDirEmpty(localPath) {
