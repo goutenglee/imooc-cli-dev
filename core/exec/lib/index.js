@@ -3,12 +3,12 @@
 const path = require("path");
 const cp = require("child_process");
 
-const Package = require("@imooc-cli-dev/package");
-const log = require("@imooc-cli-dev/log");
+const Package = require("@imooc-cli-beta/package");
+const log = require("@imooc-cli-beta/log");
 
 // XXX 手动维护的配置表，之后应该会修改成 api 获取
 const SETTINGS = {
-  init: "@imooc-cli/init",
+  init: "@imooc-cli-beta/init",
 };
 
 const CACHE_DIR = "dependencies";

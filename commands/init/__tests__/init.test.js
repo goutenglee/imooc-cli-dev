@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const init = require('..');
+const init = require("..");
 
-describe('@imooc-cli-dev/init', () => {
-    it('needs tests');
+describe("@imooc-cli-beta/init", () => {
+  it("needs tests");
 });

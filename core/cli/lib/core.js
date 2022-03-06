@@ -9,8 +9,8 @@ const commander = require("commander");
 
 const pkg = require("../package.json");
 const constant = require("./const");
-const log = require("@imooc-cli-dev/log");
-const exec = require("@imooc-cli-dev/exec");
+const log = require("@imooc-cli-beta/log");
+const exec = require("@imooc-cli-beta/exec");
 
 const program = new commander.Command();
 
@@ -86,7 +86,7 @@ function registerCommander() {
 async function checkGlobalUpdate() {
   const currentVersion = pkg.version;
   const npmName = pkg.name;
-  const { getNpmLastVersion } = require("@imooc-cli-dev/get-npm-info");
+  const { getNpmLastVersion } = require("@imooc-cli-beta/get-npm-info");
   const lastVersion = await getNpmLastVersion(currentVersion, npmName);
   if (lastVersion && semver.gt(lastVersion, currentVersion)) {
     log.warn(

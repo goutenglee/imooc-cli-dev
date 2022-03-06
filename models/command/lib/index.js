@@ -3,7 +3,7 @@
 const semver = require("semver");
 const colors = require("colors");
 
-const log = require("@imooc-cli-dev/log");
+const log = require("@imooc-cli-beta/log");
 
 const LOWEST_NODE_VERSION = "12.0.0";
 

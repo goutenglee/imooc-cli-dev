@@ -6,8 +6,8 @@ const inquirer = require("inquirer");
 const fse = require("fs-extra");
 const semver = require("semver");
 
-const Command = require("@imooc-cli-dev/command");
-const log = require("@imooc-cli-dev/log");
+const Command = require("@imooc-cli-beta/command");
+const log = require("@imooc-cli-beta/log");
 
 const TYPE_PROJECT = "project";
 const TYPE_COMPONENT = "component";

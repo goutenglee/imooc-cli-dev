@@ -7,12 +7,12 @@ const { installLocal } = require("npminstall");
 const pathExists = require("path-exists").sync;
 const fse = require("fs-extra");
 
-const { isObject } = require("@imooc-cli-dev/utils");
-const formatPath = require("@imooc-cli-dev/format-path");
+const { isObject } = require("@imooc-cli-beta/utils");
+const formatPath = require("@imooc-cli-beta/format-path");
 const {
   getDefaultRegistry,
   getNpmLastestVersion,
-} = require("@imooc-cli-dev/get-npm-info");
+} = require("@imooc-cli-beta/get-npm-info");
 // XXX log 好像出错了
 const { log } = require("console");
 

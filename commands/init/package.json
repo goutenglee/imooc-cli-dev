@@ -1,9 +1,9 @@
 {
-  "name": "@imooc-cli-dev/init",
+  "name": "@imooc-cli-beta/init",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "Gouteng <603217548@qq.com>",
-  "homepage": "https://github.com/goutenglee/imooc-cli-dev#readme",
+  "homepage": "https://github.com/goutenglee/imooc-cli-beta#readme",
   "license": "ISC",
   "main": "lib/index.js",
   "directories": {
@@ -18,17 +18,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/goutenglee/imooc-cli-dev.git"
+    "url": "git+https://github.com/goutenglee/imooc-cli-beta.git"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
-    "url": "https://github.com/goutenglee/imooc-cli-dev/issues"
+    "url": "https://github.com/goutenglee/imooc-cli-beta/issues"
   },
   "dependencies": {
-    "@imooc-cli-dev/command": "file:../../models/command",
-    "@imooc-cli-dev/log": "file:../../utils/log",
+    "@imooc-cli-beta/command": "file:../../models/command",
+    "@imooc-cli-beta/log": "file:../../utils/log",
     "fs-extra": "^10.0.1",
     "inquirer": "^8.2.0",
     "semver": "^7.3.5"

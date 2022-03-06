@@ -2,6 +2,6 @@
 
 const package = require("../lib");
 
-describe("@imooc-cli-dev/Package", () => {
+describe("@imooc-cli-beta/Package", () => {
   it("needs tests");
 });

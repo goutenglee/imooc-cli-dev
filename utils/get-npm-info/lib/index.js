@@ -15,7 +15,7 @@ function getNpmInfo(npmName, registry) {
     return null;
   }
 
-  // XXX 后面要把这个去掉，现在这样做是因为 npm 上没有 @imooc-cli-dev 这个包
+  // XXX 后面要把这个去掉，现在这样做是因为 npm 上没有 @imooc-cli-beta 这个包
   npmName = "@imooc-cli/core";
 
   const registryUrl = registry || getDefaultRegistry();

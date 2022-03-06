@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const formatPath = require('..');
+const formatPath = require("..");
 
-describe('@imooc-cli-dev/format-path', () => {
-    it('needs tests');
+describe("@imooc-cli-beta/format-path", () => {
+  it("needs tests");
 });

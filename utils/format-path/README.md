@@ -1,11 +1,11 @@
-# `@imooc-cli-dev/format-path`
+# `@imooc-cli-beta/format-path`
 
 > TODO: description
 
 ## Usage
 
 ```
-const formatPath = require('@imooc-cli-dev/format-path');
+const formatPath = require('@imooc-cli-beta/format-path');
 
 // TODO: DEMONSTRATE API
 ```
