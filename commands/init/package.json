@@ -1,6 +1,6 @@
 {
   "name": "@imooc-cli-beta/init",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "> TODO: description",
   "author": "Gouteng <603217548@qq.com>",
   "homepage": "https://github.com/goutenglee/imooc-cli-beta#readme",
@@ -14,7 +14,7 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "http://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/"
   },
   "repository": {
     "type": "git",
