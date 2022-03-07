@@ -9,6 +9,8 @@ const semver = require("semver");
 const Command = require("@imooc-cli-beta/command");
 const log = require("@imooc-cli-beta/log");
 
+const getProjectTemplate = require("./getProjectTemplate");
+
 const TYPE_PROJECT = "project";
 const TYPE_COMPONENT = "component";
 
@@ -26,6 +28,7 @@ class InitCommand extends Command {
       const projectInfo = await this.prepare();
 
       if (projectInfo) {
+        this.projectInfo = projectInfo;
         this.downloadTemplate();
       }
     } catch (e) {
@@ -33,9 +36,18 @@ class InitCommand extends Command {
     }
   }
 
-  downloadTemplate() {}
+  downloadTemplate() {
+    console.log(this.projectInfo);
+    console.log(this.projectTemplate);
+  }
 
   async prepare() {
+    const projectTemplate = await getProjectTemplate();
+    if (!projectTemplate || projectTemplate.length === 0) {
+      throw new Error("项目模板不存在");
+    }
+    this.projectTemplate = projectTemplate;
+
     const localPath = process.cwd();
 
     if (!this.isDirEmpty(localPath)) {
