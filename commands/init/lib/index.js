@@ -148,6 +148,12 @@ class InitCommand extends Command {
             }
           },
         },
+        {
+          type: "list",
+          name: "projectTemplate",
+          message: "请选择要下载的模板",
+          choices: this.createTemplateChoices(),
+        },
       ]);
       projectInfo = { type, ...projectSetting };
     } else if (type === TYPE_COMPONENT) {
@@ -162,6 +168,13 @@ class InitCommand extends Command {
       !file.startsWith(".") && ["node_modules"].indexOf(file) < 0;
     });
     return !fileList || fileList.length <= 0;
+  }
+
+  createTemplateChoices() {
+    return this.template.map((item) => ({
+      value: item.npmName,
+      name: item.name,
+    }));
   }
 }
 
