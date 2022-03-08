@@ -31,6 +31,7 @@
     "@imooc-cli-beta/log": "file:../../utils/log",
     "@imooc-cli-beta/package": "file:../../models/package",
     "@imooc-cli-beta/request": "file:../../utils/request",
+    "@imooc-cli-beta/utils": "file:../../utils/utils",
     "fs-extra": "^10.0.1",
     "inquirer": "^8.2.0",
     "semver": "^7.3.5",

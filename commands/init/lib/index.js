@@ -11,6 +11,7 @@ const userHome = require("user-home");
 const Command = require("@imooc-cli-beta/command");
 const Package = require("@imooc-cli-beta/package");
 const log = require("@imooc-cli-beta/log");
+const { spinnerStart, sleep } = require("@imooc-cli-beta/utils");
 
 const getProjectTemplate = require("./getProjectTemplate");
 
@@ -58,11 +59,19 @@ class InitCommand extends Command {
     });
 
     if (!(await templateNpm.exists())) {
+      const spinner = spinnerStart("正在下载模板...");
+      await sleep();
       await templateNpm.install();
+      spinner.stop(true);
+      log.info("下载模板成功");
     } else {
+      const spinner = spinnerStart("正在更新模板...");
+      await sleep();
       await templateNpm.update();
+      spinner.stop(true);
+      log.info("更新模板成功");
     }
-    // XXX
+    // zzz
     console.log(templateNpm);
   }
 
