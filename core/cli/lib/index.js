@@ -4,7 +4,6 @@ const path = require("path");
 const semver = require("semver");
 const colors = require("colors/safe");
 const userHome = require("user-home");
-console.log("!!!!!!!!!!!!!!!!!!!!!!", userHome);
 const pathExists = require("path-exists").sync;
 const commander = require("commander");
 

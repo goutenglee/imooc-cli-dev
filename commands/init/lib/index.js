@@ -1,12 +1,15 @@
 "use strict";
 
 const fs = require("fs");
+const path = require("path");
 
 const inquirer = require("inquirer");
 const fse = require("fs-extra");
 const semver = require("semver");
+const userHome = require("user-home");
 
 const Command = require("@imooc-cli-beta/command");
+const Package = require("@imooc-cli-beta/package");
 const log = require("@imooc-cli-beta/log");
 
 const getProjectTemplate = require("./getProjectTemplate");
@@ -29,16 +32,38 @@ class InitCommand extends Command {
 
       if (projectInfo) {
         this.projectInfo = projectInfo;
-        this.downloadTemplate();
+        await this.downloadTemplate();
       }
     } catch (e) {
       log.error(e.message);
     }
   }
 
-  downloadTemplate() {
-    console.log(this.projectInfo);
-    console.log(this.projectTemplate);
+  async downloadTemplate() {
+    const templateName = this.projectInfo.projectTemplate;
+    const templateInfo = this.projectTemplate.find(
+      (item) => (item.name = templateName)
+    );
+
+    const targetPath = path.resolve(userHome, ".imooc-cli", "template");
+    const storePath = path.resolve(targetPath, "node_modules");
+
+    const { npmName, version } = templateInfo;
+
+    const templateNpm = new Package({
+      targetPath,
+      storePath,
+      packageName: npmName,
+      packageVersion: version,
+    });
+
+    if (!(await templateNpm.exists())) {
+      await templateNpm.install();
+    } else {
+      await templateNpm.update();
+    }
+    // XXX
+    console.log(templateNpm);
   }
 
   async prepare() {
@@ -171,7 +196,7 @@ class InitCommand extends Command {
   }
 
   createTemplateChoices() {
-    return this.template.map((item) => ({
+    return this.projectTemplate.map((item) => ({
       value: item.npmName,
       name: item.name,
     }));
